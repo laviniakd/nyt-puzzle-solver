@@ -6,25 +6,17 @@ import java.io.*;
 
 public class solver {
 	
-	public static final char[] ALPHABET = new char[]{'a', 'b', 'c', 'd', 'e',
-													'f', 'g', 'h', 'i', 'j',
-													'k', 'l', 'm', 'n', 'o',
-													'p', 'q', 'r', 's', 't', 
-													'u', 'v', 'w', 'x', 'y', 'z'};
-	
 	public static void main(String[] args) throws FileNotFoundException {
 		Scanner in = new Scanner(System.in);
 		System.out.println("Input the middle letter: ");
 		String middle = ("" + in.nextLine().charAt(0)).toLowerCase();
 		
-		List<String> goodLetters = makeGoodLetters(in);
-		List<String> badLetters = new ArrayList<String>();
-		for (int i = 0; i < ALPHABET.length; i++) {
-			String n = "" + ALPHABET[i];
-			if (!goodLetters.contains(n) && !n.equals(middle)) {
-				badLetters.add(n);
-			}
-		}
+		char[] alphabet = new char[26];
+		for (int i = 0; i < 26; i++) {
+			alphabet[i] = 'a' + i;
+		}	
+		
+		List<String> badLetters = makeBadLetters(in, alphabet);
 		
 		List<String> words = generate(middle, badLetters);
 		int num = words.size();
@@ -34,7 +26,7 @@ public class solver {
 		}
 	}
 	
-	public static List<String> makeGoodLetters(Scanner in) {
+	public static List<String> makeBadLetters(Scanner in, char[] alphabet) {
 		System.out.println("Now input the other six letters: ");
 		String aux = in.nextLine().toLowerCase();
 		
@@ -47,7 +39,16 @@ public class solver {
 		for (int i = 0; i < 6; i++) {
 			goodLetters.add("" + aux.charAt(i));
 		}
-		return goodLetters;
+		
+		List<String> badLetters = new ArrayList<String>();
+		for (int i = 0; i < alphabet.length; i++) {
+			String n = "" + alphabet[i];
+			if (!goodLetters.contains(n) && !n.equals(middle)) {
+				badLetters.add(n);
+			}
+		}
+		
+		return badLetters;
 	}
 	
 	public static List<String> generate(String middle, List<String> badLetters) 
